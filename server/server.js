@@ -23,7 +23,22 @@ app.use(limiter)
 
 // CORS configuration for production
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true)
+
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "https://ranking-system-ivory.vercel.app",
+      process.env.CLIENT_URL,
+    ].filter(Boolean)
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
 }
@@ -32,7 +47,21 @@ app.use(cors(corsOptions))
 // Socket.io configuration
 const io = socketIo(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true)
+
+      const allowedOrigins = [
+        "http://localhost:3000",
+        "https://ranking-system-ivory.vercel.app",
+        process.env.CLIENT_URL,
+      ].filter(Boolean)
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error("Not allowed by CORS"))
+      }
+    },
     methods: ["GET", "POST"],
     credentials: true,
   },
