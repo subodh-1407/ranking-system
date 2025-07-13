@@ -9,8 +9,8 @@ const config = {
   production: {
     API_BASE_URL: process.env.REACT_APP_API_URL
       ? `${process.env.REACT_APP_API_URL}/api`
-      : "https://your-render-app.onrender.com/api",
-    SOCKET_URL: process.env.REACT_APP_SOCKET_URL || "https://your-render-app.onrender.com",
+      : "https://ranking-system-mfv5.onrender.com/api",
+    SOCKET_URL: process.env.REACT_APP_SOCKET_URL || "https://ranking-system-mfv5.onrender.com",
   },
 }
 
